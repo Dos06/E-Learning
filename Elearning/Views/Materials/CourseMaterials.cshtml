@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Elearning.Models.Material>
+
+@{
+    ViewBag.Title = "Course Materials";
+}
+<div class="container body-content">
+    @helper ListArrayMaterials()
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.PictureUrl)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Text)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    <a href="/Materials/Details/@item.Id" class="btn btn-info btn-lg">Details</a>
+                </td>
+            </tr>
+        }
+    }
+
+    <h1>@ViewBag.CourseName Materials</h1>
+
+
+    <!--<table class="table">
+        <tr>
+            <th>-->
+                @*@Html.DisplayNameFor(model => model.Course.Name)*@
+                <!--<div class="control-label col-md-2"><b>Course</b></div>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>-->
+            @*<th>
+                    @Html.DisplayNameFor(model => model.PictureUrl)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Text)
+                </th>*@
+            <!--<th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th></th>
+        </tr>
+
+        @ListArrayMaterials()
+
+    </table>-->
+
+    @foreach (var item in Model)
+    {
+        <div class="card my-5">
+            <h3 class="card-header" style="background-color: lightblue;">@item.Date.ToString("MMMM") @item.Date.Day, @item.Date.Year</h3>
+            <div class="card-body" style="background-color: azure;">
+                <h1 class="card-title">@item.Title</h1>
+                <p class="card-text">To Explore some useful information Click the button below!</p>
+                <a href="/Materials/Details/@item.Id" class="btn btn-info btn-lg">Details</a>
+            </div>
+        </div>
+    }
+
+</div>

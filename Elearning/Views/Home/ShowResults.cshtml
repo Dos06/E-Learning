@@ -1,0 +1,16 @@
+﻿@model List<Elearning.Models.Result>
+
+<div class="container">
+    <br />
+    @{ Html.RenderPartial("Search"); }
+    <ul class="p-0 mt-5">
+        @foreach (var item in Model)
+        {
+            <li style="list-style: none;" class="col-9 mt-4">
+                <a href="@item.Link" style="color:blue">@item.Title</a><br />
+                <span style="font-size:15px;color:green">@item.Link</span><br />
+                <span style="color:gray;">@item.Snippet</span>
+            </li>
+        }
+    </ul>
+</div>

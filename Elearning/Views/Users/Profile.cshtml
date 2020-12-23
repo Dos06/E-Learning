@@ -1,0 +1,324 @@
+﻿@*@model Elearning.Models.User*@
+@model Elearning.Models.UsersViewModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+<div class="container body-content">
+
+    <h2>Profile</h2>
+
+    @if (Session["User"] != null)
+    {
+        <h4>User</h4>
+        <hr />
+
+        <div class="col-sm-6">
+            @if (Model.PictureUrl != null && Model.PictureUrl != "" && Model.PictureUrl.Length > 20)
+            {
+                <img src="@Model.PictureUrl" class="mb-5" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover;">
+            }
+            else if (Model.PictureUrl != null && Model.PictureUrl.Length < 20)
+            {
+                <img src="@Url.Content("~/Avatars/" + Model.PictureUrl)" class="mb-5" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover;">
+            }
+            else
+            {
+                <img src="https://www.computerhope.com/jargon/g/guest-user.jpg" class="mb-5" style=" border-radius: 50%; width: 150px; height: 150px; object-fit: cover;
+">
+            }
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+
+                @*<dt>
+                        @Html.DisplayNameFor(model => model.Password)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Password)
+                    </dd>*@
+
+                @*<dt>
+                        @Html.DisplayNameFor(model => model.PasswordConfirm)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PasswordConfirm)
+                    </dd>*@
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Surname)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Surname)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tel)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Tel)
+                </dd>
+
+                @*<dt>
+                        @Html.DisplayNameFor(model => model.PictureUrl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PictureUrl)
+                    </dd>*@
+
+
+
+                @*<dt>
+                        @Html.DisplayNameFor(model => model.Courses)
+                    </dt>
+
+                    <dd>
+                        @foreach (var item in Model.Courses)
+                        {
+                            if (item.Checked)
+                            {
+                                <div><a style="font-size: 24px;" href="/Materials/CourseMaterials/@item.Id">@item.Name</a></div>
+                            }
+                        }
+                    </dd>*@
+
+
+            </dl>
+
+            <p>
+                @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+                @Html.ActionLink("Edit Profile", "EditProfile", new { id = Model.UserId }, new { @class = "btn btn-lg btn-info" })
+                @*@Html.ActionLink("Back to List", "Index")*@
+
+                @Html.ActionLink("Create New Post", "CreateUserPost", "Posts", new { id = Model.UserId }, new { @class = "btn btn-lg btn-info" })
+                @*<a href="#" data-toggle="modal" data-target="#create" class="btn btn-info btn-lg">Create New Post</a>*@
+            </p>
+
+        </div>
+
+
+        <div class="col-sm-6">
+            <h1>Courses</h1>
+            @foreach (var item in Model.Courses)
+            {
+                if (item.Checked)
+                {
+                    <div class="card my-3">
+                        <div class="card-body" style="background-color: azure;">
+                            <a style="font-size: 20px;" href="/Materials/CourseMaterials/@item.Id">@item.Name</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="col-sm-12">
+            @foreach (var item in Model.Posts)
+            {
+                <div class="card my-5">
+                    <h3 class="card-header" style="background-color: lightblue;">@item.Date.ToString("MMMM") @item.Date.Day, @item.Date.Year</h3>
+                    <div class="card-body" style="background-color: azure;">
+                        <div class="col-lg-8">
+                            <h1 class="card-title">@item.Title</h1>
+                            <p class="card-text">@item.Text</p>
+                        </div>
+                        @if (item.PictureUrl != null && item.PictureUrl != "")
+                        {
+                            <img class="col-lg-4" src="@item.PictureUrl" />
+                        }
+                        @*<a href="/Posts/Details/@item.Id" class="btn btn-info btn-lg">Details</a>*@
+                    </div>
+                </div>
+            }
+        </div>
+
+    }
+</div>
+
+
+
+
+
+
+
+
+<!--<div class="modal fade" id="create">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New User</h2>
+            </div>
+            <div class="modal-body">-->
+
+                @*@using (Html.BeginForm("Create", "User"))
+                    {*@
+
+                <!--<form action="/Posts/Create" method="post" id="createForm">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal col-12">-->
+                        @*<h4>User</h4>*@
+                        @*<hr />*@
+                        <!--@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @Html.HiddenFor(model => model.UserId)
+
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "inputEmail", @style = "min-width: 100%;" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PasswordConfirm, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PasswordConfirm, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                @Html.ValidationMessageFor(model => model.PasswordConfirm, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Tel, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Tel, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                @Html.ValidationMessageFor(model => model.Tel, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PictureUrl, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PictureUrl, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                @Html.ValidationMessageFor(model => model.PictureUrl, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="button" id="btnCancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <input type="submit" value="Register" class="btn btn-primary" />-->
+                                @*<a href="#" id="btnCreate" class="btn btn-primary">Create</a>*@
+                            <!--</div>
+                        </div>
+                    </div>-->
+                    @*}*@
+                <!--</form>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#btnCreate").click(function () {
+            var userFormData = $("#createForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Users/Create",
+                data: userFormData,
+                success: function () {
+                    window.location.href = "/Users/Index";
+                }
+            })
+        })
+
+        $("#btnCancel").click(function () {
+            window.location.href = "/Users/Index";
+        })
+
+        $("#btnCancel1").click(function () {
+            window.location.href = "/Users/Index";
+        })
+
+
+        $("#btnDelete").click(function () {
+            var id = $("#userId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Users/Delete",
+                data: { id: id },
+                success: function (result) {
+                    if (result) {
+                        $("#delete").modal('hide');
+                        $("#userId").val(null);
+                        window.location.href = "/Users/Index";
+                    } else {
+                        alert("Something went wrong!");
+                    }
+                }
+            })
+        });
+
+    })
+
+    var Confirm = function (id) {
+        $("#userId").val(id);
+        $("#delete").modal('show');
+    }
+
+x
+    $("#inputEmail").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '@Url.Action("GetEmailSearchValue", "Users")',
+                dataType: "json",
+                data: { search: $("#inputEmail").val() },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {label: item.Email, value: item.Email}
+                    }));
+                },
+                error: function (xhr, status, error) {
+                    alert("Error");
+                }
+            })
+        }
+    })
+</script>

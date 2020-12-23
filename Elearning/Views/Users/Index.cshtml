@@ -1,0 +1,337 @@
+﻿@*@model IEnumerable<Elearning.Models.User>*@
+@model Elearning.Models.User
+
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Content/FileSaver.js"></script>
+<script>
+    function fnExcelReport(id, name) {
+        var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+        tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+        tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+        var exportTable = $('#' + id).clone();
+        exportTable.find('th').last().remove();
+        exportTable.find('input').each(function (index, elem) { $(elem).remove(); });
+        exportTable.find('a').each(function (index, elem) { $(elem).remove(); });
+
+        tab_text = tab_text + exportTable.html();
+        tab_text = tab_text + '</table></body></html>';
+        var fileName = "Users" + '.xls';
+
+        //Save the file
+        var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+        window.saveAs(blob, fileName);
+    }
+</script>
+
+<div class="container body-content">
+
+    <h2>Index</h2>
+
+    <p>
+        @*@Html.ActionLink("Create New", "Create")*@
+        <a href="#" data-toggle="modal" data-target="#create" class="btn btn-info btn-lg">Create New</a>
+        <button class="btn btn-info btn-lg" onclick="javascript: fnExcelReport('dataTable', 'data')">Export to Excel</button>
+    </p>
+
+    <div class="modal fade" id="create">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Create New User</h2>
+                </div>
+                <div class="modal-body">
+
+                    @*@using (Html.BeginForm("Create", "User"))
+                        {*@
+
+                    <form action="/Users/Create" method="post" id="createForm">
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal col-12">
+                            @*<h4>User</h4>*@
+                            @*<hr />*@
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "inputEmail", @style = "min-width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.PasswordConfirm, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.PasswordConfirm, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.PasswordConfirm, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Tel, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Tel, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.Tel, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.PictureUrl, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.PictureUrl, new { htmlAttributes = new { @class = "form-control", @style = "min-width: 100%;" } })
+                                    @Html.ValidationMessageFor(model => model.PictureUrl, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <button type="button" id="btnCancel" class="btn btn-secondary btn-lg" data-dismiss="modal">Cancel</button>
+                                    <input type="submit" value="Register" class="btn btn-info btn-lg" />
+                                    @*<a href="#" id="btnCreate" class="btn btn-primary">Create</a>*@
+                                </div>
+                            </div>
+                        </div>
+                        @*}*@
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="modal fade" id="delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Confirm to Delete</h2>
+                </div>
+                <div class="modal-body">
+
+                    @*@using (Html.BeginForm("Create", "User"))
+                        {*@
+
+                    <form action="/Users/Delete" method="post" id="deleteForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="userId" name="id" />
+
+                        <div class="form-horizontal col-12">
+                            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <button type="button" id="btnCancel1" class="btn btn-secondary btn-lg" data-dismiss="modal">Cancel</button>
+                                    <input type="submit" value="Delete" class="btn btn-danger btn-lg" />
+                                    @*<a href="#" id="btnDelete" class="btn btn-primary">Create</a>*@
+                                </div>
+                            </div>
+                        </div>
+                        @*}*@
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <table class="table" id="dataTable">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Email)*@
+                Email
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Password)*@
+                Password
+            </th>
+            <!--<th>-->
+            @*@Html.DisplayNameFor(model => model.PasswordConfirm)*@
+            <!--Confirm Password
+            </th>-->
+            <th>
+                @*@Html.DisplayNameFor(model => model.Name)*@
+                Name
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Surname)*@
+                Surname
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Tel)*@
+                Telephone
+            </th>
+            <!--<th>-->
+            @*@Html.DisplayNameFor(model => model.PictureUrl)*@
+            <!--Picture Url
+            </th>-->
+            <th>Operations</th>
+        </tr>
+
+        @*@foreach (var item in Model)*@
+        @foreach (var item in ViewBag.Users)
+        {
+            <tr>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Email)*@
+                    @item.Email
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Password)*@
+                    @item.Password
+                </td>
+                <!--<td>-->
+                @*@Html.DisplayFor(modelItem => item.PasswordConfirm)*@
+                <!--@item.PasswordConfirm
+                </td>-->
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Name)*@
+                    @item.Name
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Surname)*@
+                    @item.Surname
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Tel)*@
+                    @item.Tel
+                </td>
+                <!--<td>-->
+                @*@Html.DisplayFor(modelItem => item.PictureUrl)*@
+                <!--@item.PictureUrl
+                </td>-->
+
+
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                    <a href="/Users/Edit/@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                    <a href="/Users/Details/@item.Id" class="btn btn-sm btn-primary">Details</a>
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                    @*<a href="#" id="showModal" class="btn btn-danger btn-sm" onclick="Confirm(@item.Id)">Delete</a>*@
+                    <a href="#" data-toggle="modal" data-target="#delete" class="btn btn-danger btn-sm" onclick="Confirm(@item.Id)">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+    <script>
+    $(document).ready(function () {
+        $("#btnCreate").click(function () {
+            var userFormData = $("#createForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Users/Create",
+                data: userFormData,
+                success: function () {
+                    window.location.href = "/Users/Index";
+                }
+            })
+        })
+
+        $("#btnCancel").click(function () {
+            window.location.href = "/Users/Index";
+        })
+
+        $("#btnCancel1").click(function () {
+            window.location.href = "/Users/Index";
+        })
+
+
+        $("#btnDelete").click(function () {
+            var id = $("#userId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Users/Delete",
+                data: { id: id },
+                success: function (result) {
+                    if (result) {
+                        $("#delete").modal('hide');
+                        $("#userId").val(null);
+                        window.location.href = "/Users/Index";
+                    } else {
+                        alert("Something went wrong!");
+                    }
+                }
+            })
+        });
+
+    })
+
+    var Confirm = function (id) {
+        $("#userId").val(id);
+        $("#delete").modal('show');
+    }
+
+x
+    $("#inputEmail").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '@Url.Action("GetEmailSearchValue", "Users")',
+                dataType: "json",
+                data: { search: $("#inputEmail").val() },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {label: item.Email, value: item.Email}
+                    }));
+                },
+                error: function (xhr, status, error) {
+                    alert("Error");
+                }
+            })
+        }
+    })
+    </script>

@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+}
+<div class="container">
+    <h2>Search</h2>
+    <form class="form-inline w-100" action="@Url.Action("ShowResults")" method="post">
+        <input style="width: 100%; margin-left: auto; margin-right: auto; border: groove; height: 40px;" class="form-control col-9" id="inputdefault" autofocus="autofocus" type="text" name="search" required />
+        <button type="submit" style="height: 40px;" class="btn btn-info col-3">Search</button><br /><br />
+    </form>
+</div>
